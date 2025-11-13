@@ -14,8 +14,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --reporters=default --reporters=jest-junit",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --env=jsdom --ci --reporters=default --reporters=jest-junit",
+    "eject": "react-scripts eject",
+    "test:e2e": "npx playwright test --reporter=html"
   },
   "eslintConfig": {
     "extends": [
@@ -38,7 +39,10 @@
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.8.6",
-    "jest-junit": "^16.0.0"
+    "jest-junit": "^16.0.0",
+    "babel-jest": "^29.7.0",
+    "@babel/preset-env": "^7.22.19",
+    "@babel/preset-react": "^7.22.5"
   },
   "jest-junit": {
     "suiteName": "jest tests",
@@ -51,12 +55,20 @@
     "usePathForSuiteName": "true"
   },
   "jest": {
+    "transform": {
+      "^.+\\.(js|jsx)$": "babel-jest"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/e2e/",
+      "/tests-examples/"
+    ],
     "reporters": [
       "default",
       [
         "jest-junit",
         {
-          "output": "./test-result/junit.xml"
+          "output": "./test-results/junit.xml"
         }
       ]
     ]
